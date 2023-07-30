@@ -13,8 +13,8 @@ from racketpose.alphapose.demo_api import SingleImageAlphaPose
 from alphapose.utils.config import update_config
 from alphapose.utils.pPose_nms import write_json
 
-from widgets import  ImageDisplay, ImageNavigator
-from util import get_image_names, pose_detect,draw_pose,Settings,save_label, load_label
+from racketpose.labeling.widgets import  ImageDisplay, ImageNavigator
+from racketpose.labeling.util import get_image_names, pose_detect,draw_pose,Settings,save_label, load_label
 
 
 class App(QMainWindow):
@@ -42,6 +42,7 @@ class App(QMainWindow):
 
         # save button
         self.save_button = QPushButton('save labels')
+        self.save_button.setCheckable(True)  # Set the button to be checkable
         
         # Setting up the widget to hold the layout
         self.widget = QWidget()
@@ -54,6 +55,7 @@ class App(QMainWindow):
         
         settings = Settings()
         self.pose_detector = SingleImageAlphaPose(settings, settings.get_cfg())
+
         
     def register_slots(self):
         self.open_button.clicked.connect(self.open_image)
@@ -89,13 +91,14 @@ class App(QMainWindow):
         image = Image.open(img_name)
         if not os.path.exists(label_name):
             pose = pose_detect(image,self.pose_detector)
+            pose['img_name'] = img_name
             for rst in pose['result']:
                 rst['pose_label'] = self.pose_classes[0]
             save_label(img_name,label_name,pose)
         else:
             pose = load_label(label_name)
 
-        if self.idx >0:
+        if self.idx >0 and self.save_button.isChecked():
             prev_image_name = self.image_names[self.idx-1]
             prev_label_name = prev_image_name[:-3] + 'json'
             prev_pose = load_label(prev_label_name)
@@ -114,7 +117,11 @@ class App(QMainWindow):
         self.navigator.set_text_and_progress(img_name, 1 + self.idx, len(self.image_names))
 
     def save_label(self):
-        print('saved')
+        if self.save_button.isChecked():
+            print("Button is down")
+        else:
+            print("Button is up")
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

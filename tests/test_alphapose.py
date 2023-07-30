@@ -374,7 +374,7 @@ def example():
 
 
     cfg = update_config(settings.cfg)
-    im_name = '/home/qingyu/RacketPose/data/from_bag_1/img_000017.jpg'
+    im_name = '/home/qingyu/mcf4ball/tennis_3/cam2_000412.jpg'
 
     outputpath = "./"
 
@@ -398,9 +398,10 @@ def example():
 
     # cv2.rectangle(img, (int(cx),int(cy)), (int(cx+cw),int(cy+ch)), (0,0,255), 2)
 
-    cv2.imshow("AlphaPose Demo", result)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("AlphaPose Demo", result)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    cv2.imwrite('saved_image.jpg', result)
 
     # write the result to json:
     result = [pose]

@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap, QIcon, QImage,QKeySequence,QCursor
 from PyQt5.QtCore import Qt, QPoint,QSize
 from PIL import Image
 from functools import partial
-from util import get_image_names, pose_detect,draw_pose,Settings,save_label, load_label, check_inside
+from .util import get_image_names, pose_detect,draw_pose,Settings,save_label, load_label, check_inside
 
 # import cv2
 """
